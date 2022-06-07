@@ -1,11 +1,19 @@
-import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { IInspector } from '../../../../../common/interfaces/interfaces';
 import { classNames } from '../../../../../common/utils/classnames';
 
-const InspectorsTable = () => {
-  const [inspectors, setInspectors] = useState<IInspector[] | []>([]);
-
+const InspectorsTable = ({
+  inspectors,
+  liftInspector,
+  openRemoveInspectorModal,
+  openEditInspectorModal,
+}: // ,
+{
+  inspectors: IInspector[];
+  liftInspector: (value: IInspector) => void;
+  openRemoveInspectorModal: () => void;
+  openEditInspectorModal: () => void;
+}) => {
   // Pagination
   const itemsPerPage = 15;
   const totalPageCount =
@@ -14,30 +22,6 @@ const InspectorsTable = () => {
   const [items, setItems] = useState(
     inspectors.length > 0 ? inspectors.slice(0, itemsPerPage) : []
   )!;
-
-  useEffect(() => {
-    const source = axios.CancelToken.source();
-
-    const fetchInspectors = async () => {
-      console.log('Costly fetch...');
-      try {
-        const response: AxiosResponse = await axios.get(
-          `${process.env.REACT_APP_SERVER_HOSTNAME}/admin/get/inspectors/all`,
-          { cancelToken: source.token, withCredentials: true }
-        );
-
-        setInspectors(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchInspectors();
-
-    return () => {
-      source.cancel();
-    };
-  }, []);
 
   useEffect(() => {
     if (parseInt(page) === 1 && inspectors.length > 0) {
@@ -118,7 +102,13 @@ const InspectorsTable = () => {
                           {item.email}
                         </td>
                         <td className='space-x-2 whitespace-nowrap px-6 py-2 text-sm'>
-                          <button className='rounded-full bg-yellow-300 p-1.5 text-black hover:bg-yellow-400'>
+                          <button
+                            onClick={() => {
+                              liftInspector(item);
+                              openEditInspectorModal();
+                            }}
+                            className='rounded-full bg-yellow-300 p-1.5 text-black hover:bg-yellow-400'
+                          >
                             <svg
                               xmlns='http://www.w3.org/2000/svg'
                               className='h-4 w-4'
@@ -133,7 +123,13 @@ const InspectorsTable = () => {
                               />
                             </svg>
                           </button>
-                          <button className='rounded-full bg-red-600 p-1.5 text-white hover:bg-red-700'>
+                          <button
+                            onClick={() => {
+                              liftInspector(item);
+                              openRemoveInspectorModal();
+                            }}
+                            className='rounded-full bg-red-600 p-1.5 text-white hover:bg-red-700'
+                          >
                             <svg
                               xmlns='http://www.w3.org/2000/svg'
                               className='h-4 w-4'

@@ -1,4 +1,5 @@
 import { Transition, Dialog } from '@headlessui/react';
+import axios, { AxiosResponse } from 'axios';
 import { Fragment } from 'react';
 import { IInspector } from '../../../../../common/interfaces/interfaces';
 
@@ -6,12 +7,28 @@ const RemoveInspectorModal = ({
   inspector,
   isOpen,
   closeModal,
+  liftRemoveInspectorSuccess,
 }: {
   inspector: IInspector;
   isOpen: boolean;
   closeModal: () => void;
-  // liftRemoveVehicleSuccess: (value: boolean) => void;
+  liftRemoveInspectorSuccess: (value: boolean) => void;
 }) => {
+  const removeInspector = async () => {
+    const response: AxiosResponse = await axios.get(
+      `${process.env.REACT_APP_SERVER_HOSTNAME}/admin/delete/inspector/${inspector.id}`,
+      { withCredentials: true }
+    );
+    const data: { success: boolean } = response.data;
+    if (data.success) {
+      console.log('Successfully removed');
+      liftRemoveInspectorSuccess(true);
+      closeModal();
+    } else {
+      console.log('Could not remove');
+    }
+  };
+
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -74,7 +91,7 @@ const RemoveInspectorModal = ({
                       Ακύρωση
                     </button>
                     <button
-                      // onClick={removeVehicle}
+                      onClick={removeInspector}
                       type='button'
                       className='justify-center rounded-md border border-transparent bg-yellow-300 px-4 py-0.5 text-sm font-medium shadow hover:bg-yellow-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
                     >

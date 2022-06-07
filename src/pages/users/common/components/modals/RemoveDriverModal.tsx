@@ -14,7 +14,7 @@ const RemoveDriverModal = ({
   closeModal: () => void;
   liftRemoveDriverSuccess: (value: boolean) => void;
 }) => {
-  const removeVehicle = async () => {
+  const removeDriver = async () => {
     const response: AxiosResponse = await axios.get(
       `${process.env.REACT_APP_SERVER_HOSTNAME}/admin/delete/driver/${driver.id}`,
       { withCredentials: true }
@@ -90,7 +90,7 @@ const RemoveDriverModal = ({
                       Ακύρωση
                     </button>
                     <button
-                      onClick={removeVehicle}
+                      onClick={removeDriver}
                       type='button'
                       className='justify-center rounded-md border border-transparent bg-yellow-300 px-4 py-0.5 text-sm font-medium shadow hover:bg-yellow-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
                     >

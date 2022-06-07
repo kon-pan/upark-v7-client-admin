@@ -1,11 +1,80 @@
+import axios, { AxiosResponse } from 'axios';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import BasicLayout from '../../../../common/components/layout/basic/BasicLayout';
+import { IInspector } from '../../../../common/interfaces/interfaces';
 import { useSidebar } from '../../../../common/stores/SidebarStore';
+import EditInspectorModal from '../../common/components/modals/EditInspectorModal';
+import RemoveInspectorModal from '../../common/components/modals/RemoveInspectorModal';
 import CaretRight from '../common/icons/CaretRight';
 import InspectorsTable from './components/InspectorsTable';
 
 const Inspectors = () => {
   const { setSidebarOpen, sidebarOpen } = useSidebar();
+
+  const [ready, setReady] = useState(false);
+  const [update, setUpdate] = useState(true);
+  const [inspectors, setInspectors] = useState<IInspector[]>([]);
+  const [inspector, setInspector] = useState<IInspector>();
+  const [isEditInspectorModalOpen, setIsEditInspectorModalOpen] =
+    useState(false);
+  const [isRemoveInspectorModalOpen, setIsRemoveInspectorModalOpen] =
+    useState(false);
+
+  const liftInspector = (value: IInspector) => {
+    setInspector(value);
+  };
+
+  useEffect(() => {
+    const source = axios.CancelToken.source();
+
+    const fetchInspectors = async () => {
+      console.log('Costly fetch...');
+      try {
+        const response: AxiosResponse = await axios.get(
+          `${process.env.REACT_APP_SERVER_HOSTNAME}/admin/get/inspectors/all`,
+          { cancelToken: source.token, withCredentials: true }
+        );
+
+        setInspectors(response.data);
+        setReady(true);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchInspectors();
+
+    return () => {
+      source.cancel();
+    };
+  }, [update]);
+
+  function openRemoveInspectorModal() {
+    setIsRemoveInspectorModalOpen(true);
+  }
+  function closeRemoveInspectorModal() {
+    setIsRemoveInspectorModalOpen(false);
+  }
+
+  function openEditInspectorModal() {
+    setIsEditInspectorModalOpen(true);
+  }
+  function closeEditInspectorModal() {
+    setIsEditInspectorModalOpen(false);
+  }
+
+  function liftEditInspectorSuccess(value: boolean) {
+    if (value === true) {
+      setUpdate((state) => !state);
+    }
+  }
+
+  function liftRemoveInspectorSuccess(value: boolean) {
+    if (value === true) {
+      setUpdate((state) => !state);
+    }
+  }
 
   return (
     <BasicLayout>
@@ -45,10 +114,43 @@ const Inspectors = () => {
               </svg>
             </Link>
           </div>
-
-          <InspectorsTable />
+          {ready ? (
+            <InspectorsTable
+              inspectors={inspectors}
+              liftInspector={liftInspector}
+              openEditInspectorModal={openEditInspectorModal}
+              openRemoveInspectorModal={openRemoveInspectorModal}
+            />
+          ) : (
+            <div className='mt-48 flex max-h-screen w-full flex-1 flex-col items-center justify-center bg-neutral-50'>
+              <div
+                style={{ borderTopColor: 'transparent' }}
+                className='h-12 w-12 animate-spin rounded-full border-4 border-solid border-neutral-400'
+              ></div>
+            </div>
+          )}
         </div>
       </div>
+
+      <>
+        {isRemoveInspectorModalOpen && inspector && (
+          <RemoveInspectorModal
+            inspector={inspector}
+            isOpen={isRemoveInspectorModalOpen}
+            closeModal={closeRemoveInspectorModal}
+            liftRemoveInspectorSuccess={liftRemoveInspectorSuccess}
+          />
+        )}
+
+        {isEditInspectorModalOpen && inspector && (
+          <EditInspectorModal
+            inspector={inspector}
+            isOpen={isEditInspectorModalOpen}
+            closeModal={closeEditInspectorModal}
+            liftEditInspectorSuccess={liftEditInspectorSuccess}
+          />
+        )}
+      </>
     </BasicLayout>
   );
 };

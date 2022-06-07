@@ -4,6 +4,7 @@ import BasicLayout from '../../../../common/components/layout/basic/BasicLayout'
 import { IInspector } from '../../../../common/interfaces/interfaces';
 import { useSidebar } from '../../../../common/stores/SidebarStore';
 import { sleep } from '../../../../common/utils/sleep';
+import EditInspectorModal from '../../common/components/modals/EditInspectorModal';
 import RemoveInspectorModal from '../../common/components/modals/RemoveInspectorModal';
 import InspectorsTable from './components/InspectorsTable';
 
@@ -11,8 +12,11 @@ const Inspectors = () => {
   const { setSidebarOpen, sidebarOpen } = useSidebar();
 
   const [ready, setReady] = useState(false);
+  const [update, setUpdate] = useState(true);
   const [inspectors, setInspectors] = useState<IInspector[]>([]);
   const [inspector, setInspector] = useState<IInspector>();
+  const [isEditInspectorModalOpen, setIsEditInspectorModalOpen] =
+    useState(false);
   const [isRemoveInspectorModalOpen, setIsRemoveInspectorModalOpen] =
     useState(false);
 
@@ -44,13 +48,32 @@ const Inspectors = () => {
     return () => {
       source.cancel();
     };
-  }, []);
+  }, [update]);
 
   function openRemoveInspectorModal() {
     setIsRemoveInspectorModalOpen(true);
   }
   function closeRemoveInspectorModal() {
     setIsRemoveInspectorModalOpen(false);
+  }
+
+  function openEditInspectorModal() {
+    setIsEditInspectorModalOpen(true);
+  }
+  function closeEditInspectorModal() {
+    setIsEditInspectorModalOpen(false);
+  }
+
+  function liftEditInspectorSuccess(value: boolean) {
+    if (value === true) {
+      setUpdate((state) => !state);
+    }
+  }
+
+  function liftRemoveInspectorSuccess(value: boolean) {
+    if (value === true) {
+      setUpdate((state) => !state);
+    }
   }
 
   return (
@@ -70,7 +93,7 @@ const Inspectors = () => {
             inspectors={inspectors}
             liftInspector={liftInspector}
             openRemoveInspectorModal={openRemoveInspectorModal}
-            // openDriverDetailsModal={openDriverDetailsModal}
+            openEditInspectorModal={openEditInspectorModal}
           />
         </div>
       ) : (
@@ -82,13 +105,25 @@ const Inspectors = () => {
         </div>
       )}
 
-      {inspector && (
-        <RemoveInspectorModal
-          inspector={inspector}
-          isOpen={isRemoveInspectorModalOpen}
-          closeModal={closeRemoveInspectorModal}
-        />
-      )}
+      <>
+        {isRemoveInspectorModalOpen && inspector && (
+          <RemoveInspectorModal
+            inspector={inspector}
+            isOpen={isRemoveInspectorModalOpen}
+            closeModal={closeRemoveInspectorModal}
+            liftRemoveInspectorSuccess={liftRemoveInspectorSuccess}
+          />
+        )}
+
+        {isEditInspectorModalOpen && inspector && (
+          <EditInspectorModal
+            inspector={inspector}
+            isOpen={isEditInspectorModalOpen}
+            closeModal={closeEditInspectorModal}
+            liftEditInspectorSuccess={liftEditInspectorSuccess}
+          />
+        )}
+      </>
     </BasicLayout>
   );
 };
