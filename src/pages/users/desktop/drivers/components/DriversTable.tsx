@@ -26,7 +26,6 @@ const DriversTable = ({
     }
 
     if (parseInt(page) > 1 && drivers.length > 0) {
-      console.log(parseInt(page));
       setItems(
         drivers.slice(
           (parseInt(page) - 1) * itemsPerPage,

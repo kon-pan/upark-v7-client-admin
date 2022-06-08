@@ -30,8 +30,6 @@ const EarningsLastFourWeeksChart = () => {
   >(undefined);
 
   useEffect(() => {
-    console.log('fetching data...');
-
     const source = axios.CancelToken.source();
 
     const fetchEarningsLastFourWeeks = async () => {
@@ -53,7 +51,6 @@ const EarningsLastFourWeeksChart = () => {
     };
   }, []);
 
-  console.log(earningsLastFourWeeks);
 
   const labels = earningsLastFourWeeks && [
     earningsLastFourWeeks[0].range,

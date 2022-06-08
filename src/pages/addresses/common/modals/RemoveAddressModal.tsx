@@ -21,7 +21,6 @@ const RemoveAddressModal = ({
     );
     const data: { success: boolean } = response.data;
     if (data.success) {
-      console.log('Successfully removed');
       liftRemoveAddressSuccess(true);
       closeModal();
     } else {
@@ -75,8 +74,8 @@ const RemoveAddressModal = ({
                 </Dialog.Title>
                 <div className='mt-2 flex flex-col'>
                   <div className='text-sm font-light'>
-                    Είστε σίγουροι ότι θέλετε να αφαιρέσετε το σημείο στάθμευσης της οδού{' '}
-                    <span className='font-medium'>{address.name}</span>{' '}
+                    Είστε σίγουροι ότι θέλετε να αφαιρέσετε το σημείο στάθμευσης
+                    της οδού <span className='font-medium'>{address.name}</span>{' '}
                     με αναγνωριστικό κωδικό{' '}
                     <span className='font-medium'>{address.id}</span>;
                   </div>

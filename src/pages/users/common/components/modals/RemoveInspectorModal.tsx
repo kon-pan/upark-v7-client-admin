@@ -21,7 +21,6 @@ const RemoveInspectorModal = ({
     );
     const data: { success: boolean } = response.data;
     if (data.success) {
-      console.log('Successfully removed');
       liftRemoveInspectorSuccess(true);
       closeModal();
     } else {

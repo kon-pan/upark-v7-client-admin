@@ -31,7 +31,6 @@ const EarningsLastSevenDaysChart = () => {
   >(undefined);
 
   useEffect(() => {
-    console.log('fetching data...');
 
     const source = axios.CancelToken.source();
 

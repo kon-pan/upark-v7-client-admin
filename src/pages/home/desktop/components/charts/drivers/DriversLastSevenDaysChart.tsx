@@ -29,8 +29,6 @@ const UsersLastSevenDaysChart = () => {
   >(undefined);
 
   useEffect(() => {
-    console.log('fetching data...');
-
     const source = axios.CancelToken.source();
 
     const fetchEarningsLastSevenDays = async () => {

@@ -29,7 +29,6 @@ const InspectorsTable = ({
     }
 
     if (parseInt(page) > 1 && inspectors.length > 0) {
-      console.log(parseInt(page));
       setItems(
         inspectors.slice(
           (parseInt(page) - 1) * itemsPerPage,

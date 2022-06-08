@@ -32,7 +32,6 @@ const Inspectors = () => {
     const source = axios.CancelToken.source();
 
     const fetchAllInspectors = async () => {
-      console.log('costly fetch');
 
       setReady(false);
       await sleep(1000);

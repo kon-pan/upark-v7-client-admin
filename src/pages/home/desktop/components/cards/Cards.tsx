@@ -22,15 +22,12 @@ const Cards = () => {
     undefined
   );
 
-  console.log(driversCount, inspectorsCount, addressesCount, earningsToday);
-
   useEffect(() => {
     const source = axios.CancelToken.source();
 
     const fetchCardsData = async () => {
       // Emulate slower response
       // await sleep(1000);
-      console.log('Costly fetch...');
       // Drivers count
       try {
         const response: AxiosResponse = await axios.get(

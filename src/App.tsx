@@ -21,8 +21,6 @@ function App() {
 
   const { admin } = useAuth();
 
-  console.log(admin);
-
   //gets screen size - to fix mobile viewport height problem
   useEffect(() => {
     function handleResize() {

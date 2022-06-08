@@ -22,7 +22,6 @@ const EditInspectorModal = ({
 
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
-    console.log('Edit inspector...');
 
     try {
       const response: AxiosResponse = await axios.post(
@@ -34,7 +33,6 @@ const EditInspectorModal = ({
       );
 
       if (response.data.success) {
-        console.log('Vehicle saved successfully');
         liftEditInspectorSuccess(true);
         closeModal();
       } else {

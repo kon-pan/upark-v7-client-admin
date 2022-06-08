@@ -32,7 +32,6 @@ const DesktopAddressesTable = ({
     }
 
     if (parseInt(page) > 1 && addresses.length > 0) {
-      console.log(parseInt(page));
       setItems(
         addresses.slice(
           (parseInt(page) - 1) * itemsPerPage,

@@ -12,7 +12,6 @@ const Addresses = () => {
   const screen = useContext(ScreenSizeContext);
   const [,] = useDocTitle('uPark | Σημεία στάθμευσης');
 
-
   const [ready, setReady] = useState(false);
   const [update, setUpdate] = useState(true);
   const [addresses, setAddresses] = useState<
@@ -31,13 +30,11 @@ const Addresses = () => {
 
     const fetchAddresses = async () => {
       // await sleep(2000);
-      console.log('Costly fetch...');
       try {
         const response: AxiosResponse = await axios.get(
           `${process.env.REACT_APP_SERVER_HOSTNAME}/admin/get/addresses/all`,
           { cancelToken: source.token, withCredentials: true }
         );
-        console.log(response);
 
         setAddresses(response.data);
         setReady(true);

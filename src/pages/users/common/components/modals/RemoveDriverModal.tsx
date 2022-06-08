@@ -21,7 +21,6 @@ const RemoveDriverModal = ({
     );
     const data: { success: boolean } = response.data;
     if (data.success) {
-      console.log('Successfully removed');
       liftRemoveDriverSuccess(true);
       closeModal();
     } else {

@@ -29,7 +29,6 @@ const Drivers = () => {
     const source = axios.CancelToken.source();
 
     const fetchAllDrivers = async () => {
-      console.log('costly fetch');
 
       setReady(false);
       await sleep(1000);

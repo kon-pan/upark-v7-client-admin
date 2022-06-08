@@ -43,7 +43,6 @@ const PieChart = () => {
     };
   }, []);
 
-  console.log(cardsDistributionToday);
 
   return (
     <div

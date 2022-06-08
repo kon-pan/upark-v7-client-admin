@@ -30,8 +30,6 @@ const EarningsLastSixMonthsChart = () => {
   >(undefined);
 
   useEffect(() => {
-    console.log('fetching data...');
-
     const source = axios.CancelToken.source();
 
     const fetchEarningsLastSixMonths = async () => {
@@ -52,8 +50,6 @@ const EarningsLastSixMonthsChart = () => {
       source.cancel();
     };
   }, []);
-
-  console.log(earningsLastSixMonths);
 
   const labels = earningsLastSixMonths && [
     earningsLastSixMonths[0].month,

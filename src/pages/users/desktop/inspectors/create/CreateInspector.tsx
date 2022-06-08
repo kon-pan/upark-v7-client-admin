@@ -21,7 +21,6 @@ const CreateInspector = () => {
     setLoading(true);
     console.log(data);
     const { firstName, lastName, email, password } = data;
-    console.log(firstName, lastName, email, password);
 
     try {
       const response: AxiosResponse = await axios.post(

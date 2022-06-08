@@ -32,7 +32,6 @@ const Inspectors = () => {
     const source = axios.CancelToken.source();
 
     const fetchInspectors = async () => {
-      console.log('Costly fetch...');
       try {
         const response: AxiosResponse = await axios.get(
           `${process.env.REACT_APP_SERVER_HOSTNAME}/admin/get/inspectors/all`,

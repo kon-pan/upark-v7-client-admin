@@ -20,7 +20,6 @@ const CreateAddress = () => {
     e.preventDefault();
     setLoading(true);
 
-    console.log({ name, coords, available });
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response: AxiosResponse = await axios.post(

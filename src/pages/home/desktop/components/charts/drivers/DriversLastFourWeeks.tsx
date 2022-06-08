@@ -29,8 +29,6 @@ const DriversLastFourWeeksChart = () => {
   >(undefined);
 
   useEffect(() => {
-    console.log('fetching data...');
-
     const source = axios.CancelToken.source();
 
     const fetchDriversLastFourWeeks = async () => {
@@ -51,9 +49,6 @@ const DriversLastFourWeeksChart = () => {
       source.cancel();
     };
   }, []);
-
-  console.log(driversLastFourWeeks);
-  
 
   const labels = driversLastFourWeeks && [
     driversLastFourWeeks[0].range,
