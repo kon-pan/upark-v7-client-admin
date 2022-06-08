@@ -2,13 +2,19 @@ import axios, { AxiosResponse } from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import BasicLayout from '../../common/components/layout/basic/BasicLayout';
 import { ScreenSizeContext } from '../../common/contexts/ScreenSizeContext';
-import AddressesTable from './desktop/components/AddressesTable';
+import { useDocTitle } from '../../common/hooks/useDocTitle';
+import DesktopAddressesTable from './desktop/components/DesktopAddressesTable';
 import DesktopAddresses from './desktop/DesktopAddresses';
+import MobileAddressesTable from './mobile/components/MobileAddressesTable';
+import MobileAddresses from './mobile/MobileAddresses';
 
 const Addresses = () => {
   const screen = useContext(ScreenSizeContext);
+  const [,] = useDocTitle('uPark | Σημεία στάθμευσης');
+
 
   const [ready, setReady] = useState(false);
+  const [update, setUpdate] = useState(true);
   const [addresses, setAddresses] = useState<
     | {
         id: number;
@@ -45,14 +51,41 @@ const Addresses = () => {
     return () => {
       source.cancel();
     };
-  }, []);
+  }, [update]);
+
+  function liftRemoveAddressSuccess(value: boolean) {
+    if (value === true) {
+      setUpdate((state) => !state);
+    }
+  }
+  function liftEditAddressSuccess(value: boolean) {
+    if (value === true) {
+      setUpdate((state) => !state);
+    }
+  }
 
   return ready ? (
     <BasicLayout>
-      {(screen.isMobile || screen.isTablet) && <></>}
+      {(screen.isMobile || screen.isTablet) && (
+        <MobileAddresses
+          addressTable={
+            <MobileAddressesTable
+              addresses={addresses}
+              liftRemoveAddressSucces={liftRemoveAddressSuccess}
+              liftEditAddressSuccess={liftEditAddressSuccess}
+            />
+          }
+        />
+      )}
       {(screen.isDesktop || screen.isLargeDesktop) && (
         <DesktopAddresses
-          addressTable={<AddressesTable addresses={addresses} />}
+          addressTable={
+            <DesktopAddressesTable
+              addresses={addresses}
+              liftRemoveAddressSucces={liftRemoveAddressSuccess}
+              liftEditAddressSuccess={liftEditAddressSuccess}
+            />
+          }
         />
       )}
     </BasicLayout>

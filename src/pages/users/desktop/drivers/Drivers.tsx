@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import BasicLayout from '../../../../common/components/layout/basic/BasicLayout';
+import { useDocTitle } from '../../../../common/hooks/useDocTitle';
 import { IDriver } from '../../../../common/interfaces/interfaces';
 import { useSidebar } from '../../../../common/stores/SidebarStore';
 import { sleep } from '../../../../common/utils/sleep';
@@ -11,6 +12,7 @@ import DriversTable from './components/DriversTable';
 
 const Drivers = () => {
   const { setSidebarOpen, sidebarOpen } = useSidebar();
+  const [,] = useDocTitle('uPark | Οδηγοί');
 
   const [ready, setReady] = useState(false);
   const [update, setUpdate] = useState(true);

@@ -8,12 +8,36 @@ import { useSidebar } from '../../../../common/stores/SidebarStore';
 import { classNames } from '../../../../common/utils/classnames';
 import CaretRight from '../../../users/desktop/common/icons/CaretRight';
 import Map from './Map';
+import axios, { AxiosResponse } from 'axios';
 
 const CreateAddress = () => {
   const { setSidebarOpen, sidebarOpen } = useSidebar();
 
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState<boolean | undefined>(undefined);
+
   const submitHandler = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+
+    console.log({ name, coords, available });
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const response: AxiosResponse = await axios.post(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/admin/address/create`,
+        { name, coords, available },
+        { withCredentials: true }
+      );
+
+      if (response.data.success) {
+        setSuccess(true);
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const [name, setName] = useState<string>('');
@@ -69,6 +93,17 @@ const CreateAddress = () => {
               Δημιουργία σημείου στάθμευσης
             </div>
           </div>
+
+          {success && (
+            <div className='mt-2 mb-4 rounded bg-green-100 p-2 text-center font-medium text-green-800 shadow-md'>
+              Το νέο σημείο στάθμευσης αποθηκεύτηκε με επιτυχία.
+            </div>
+          )}
+          {success === false && (
+            <div className='mt-2 mb-4 rounded bg-red-100 p-2 text-center font-medium text-red-800 shadow-md'>
+              Υπήρξε πρόβλημα κατά την υποβολή της φόρμας. Προσπαθήστε ξανα.
+            </div>
+          )}
 
           <div className='flex w-full flex-col justify-center border-b pb-4'>
             {/* Form */}
@@ -145,15 +180,27 @@ const CreateAddress = () => {
                   )}
                   type='submit'
                 >
-                  <div>Αποθήκευση</div>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='h-5 w-5'
-                    viewBox='0 0 20 20'
-                    fill='currentColor'
-                  >
-                    <path d='M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z' />
-                  </svg>
+                  {loading ? (
+                    <div className='flex items-center justify-center'>
+                      <div className='mr-2'>Γίνεται αποθήκευση</div>
+                      <div
+                        style={{ borderTopColor: 'transparent' }}
+                        className='my-0.5 h-5 w-5 animate-spin rounded-full border-2 border-solid border-white'
+                      ></div>
+                    </div>
+                  ) : (
+                    <>
+                      <div>Αποθήκευση</div>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='h-5 w-5'
+                        viewBox='0 0 20 20'
+                        fill='currentColor'
+                      >
+                        <path d='M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z' />
+                      </svg>
+                    </>
+                  )}
                 </button>
               </div>
             </form>

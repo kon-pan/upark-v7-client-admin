@@ -1,10 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IAddress } from '../../../../common/interfaces/interfaces';
 import { classNames } from '../../../../common/utils/classnames';
-import LocationModal from './modals/LocationModal';
+import EditAddressModal from '../../common/modals/EditAddressModal';
+import LocationModal from '../../common/modals/LocationModal';
+import RemoveAddressModal from '../../common/modals/RemoveAddressModal';
 
-const AddressesTable = ({ addresses }: { addresses: IAddress[] }) => {
+const DesktopAddressesTable = ({
+  addresses,
+  liftRemoveAddressSucces,
+  liftEditAddressSuccess,
+}: {
+  addresses: IAddress[];
+  liftRemoveAddressSucces: (value: boolean) => void;
+  liftEditAddressSuccess: (value: boolean) => void;
+}) => {
   const [position, setPosition] = useState<[number, number]>([0, 0]);
+
+  const [address, setAddress] = useState<IAddress>();
   // Pagination
   const itemsPerPage = 15;
   const totalPageCount =
@@ -35,12 +47,28 @@ const AddressesTable = ({ addresses }: { addresses: IAddress[] }) => {
 
   // Modals
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+  const [isRemoveAddressModaOpen, setIsRemoveAddressModaOpen] = useState(false);
+  const [isEditAddressModaOpen, setIsEditAddressModaOpen] = useState(false);
 
   function openLocationModal() {
     setIsLocationModalOpen(true);
   }
   function closeLocationModal() {
     setIsLocationModalOpen(false);
+  }
+
+  function openRemoveAddressModal() {
+    setIsRemoveAddressModaOpen(true);
+  }
+  function closeRemoveAddressModal() {
+    setIsRemoveAddressModaOpen(false);
+  }
+
+  function openEditAddressModal() {
+    setIsEditAddressModaOpen(true);
+  }
+  function closeEditAddressModal() {
+    setIsEditAddressModaOpen(false);
   }
 
   return (
@@ -116,7 +144,7 @@ const AddressesTable = ({ addresses }: { addresses: IAddress[] }) => {
                           <button
                             onClick={() => {
                               setPosition([item.position[0], item.position[1]]);
-                              setIsLocationModalOpen(true);
+                              openLocationModal();
                             }}
                             className='rounded-full border bg-blue-600 p-1.5 text-white hover:bg-blue-700'
                           >
@@ -133,7 +161,13 @@ const AddressesTable = ({ addresses }: { addresses: IAddress[] }) => {
                               />
                             </svg>
                           </button>
-                          <button className='rounded-full border bg-yellow-300 p-1.5 text-black hover:bg-yellow-400'>
+                          <button
+                            onClick={() => {
+                              setAddress(item);
+                              openEditAddressModal();
+                            }}
+                            className='rounded-full border bg-yellow-300 p-1.5 text-black hover:bg-yellow-400'
+                          >
                             <svg
                               xmlns='http://www.w3.org/2000/svg'
                               className='h-4 w-4'
@@ -148,7 +182,13 @@ const AddressesTable = ({ addresses }: { addresses: IAddress[] }) => {
                               />
                             </svg>
                           </button>
-                          <button className='rounded-full border bg-red-600 p-1.5 text-white hover:bg-red-700'>
+                          <button
+                            onClick={() => {
+                              setAddress(item);
+                              openRemoveAddressModal();
+                            }}
+                            className='rounded-full border bg-red-600 p-1.5 text-white hover:bg-red-700'
+                          >
                             <svg
                               xmlns='http://www.w3.org/2000/svg'
                               className='h-4 w-4'
@@ -173,7 +213,6 @@ const AddressesTable = ({ addresses }: { addresses: IAddress[] }) => {
         </div>
       </div>
 
-      {/* Pagination */}
       {/* Pagination */}
       {addresses.length > 0 && (
         <div className='mt-4 flex w-full items-center justify-between space-x-2'>
@@ -237,13 +276,33 @@ const AddressesTable = ({ addresses }: { addresses: IAddress[] }) => {
       )}
 
       {/* Modals */}
-      <LocationModal
-        position={position}
-        isOpen={isLocationModalOpen}
-        closeModal={closeLocationModal}
-      />
+      <>
+        <LocationModal
+          position={position}
+          isOpen={isLocationModalOpen}
+          closeModal={closeLocationModal}
+        />
+
+        {address && (
+          <RemoveAddressModal
+            address={address}
+            isOpen={isRemoveAddressModaOpen}
+            closeModal={closeRemoveAddressModal}
+            liftRemoveAddressSuccess={liftRemoveAddressSucces}
+          />
+        )}
+
+        {address && (
+          <EditAddressModal
+            address={address}
+            isOpen={isEditAddressModaOpen}
+            closeModal={closeEditAddressModal}
+            liftEditAddressSuccess={liftEditAddressSuccess}
+          />
+        )}
+      </>
     </>
   );
 };
 
-export default AddressesTable;
+export default DesktopAddressesTable;

@@ -1,9 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import BasicLayout from '../../../common/components/layout/basic/BasicLayout';
+import { useDocTitle } from '../../../common/hooks/useDocTitle';
 import { useSidebar } from '../../../common/stores/SidebarStore';
 
 const MobileUsers = () => {
   const { setSidebarOpen, sidebarOpen } = useSidebar();
+  const [,] = useDocTitle('uPark | Χρήστες');
+
   const navigate = useNavigate();
 
   return (

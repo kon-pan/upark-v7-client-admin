@@ -118,7 +118,7 @@ const Sidebar = () => {
             >
               Ελεγκτές
             </Link>
-            <Link
+            {/* <Link
               to='/'
               onClick={() => {
                 setSidebarOpen(false);
@@ -126,7 +126,7 @@ const Sidebar = () => {
               className='px-3 py-1 hover:underline'
             >
               Διαχειριστές
-            </Link>
+            </Link> */}
           </Transition>
 
           <Link

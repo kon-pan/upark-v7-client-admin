@@ -1,9 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import BasicLayout from '../../../common/components/layout/basic/BasicLayout';
+import { useDocTitle } from '../../../common/hooks/useDocTitle';
 import { useSidebar } from '../../../common/stores/SidebarStore';
 
 const DesktopUsers = () => {
   const { setSidebarOpen, sidebarOpen } = useSidebar();
+  const [,] = useDocTitle('uPark | Χρήστες');
+
   const navigate = useNavigate();
 
   return (
@@ -37,16 +40,6 @@ const DesktopUsers = () => {
               className='flex h-36 w-40 cursor-pointer flex-col items-center justify-center rounded border bg-white shadow-md hover:shadow-inner'
             >
               <div className='text-center text-2xl font-medium'>Ελεγκτές</div>
-            </div>
-            <div
-              onClick={() => {
-                navigate('/users/admins');
-              }}
-              className='flex h-36 w-40 cursor-pointer flex-col items-center justify-center rounded border bg-white shadow-md hover:shadow-inner'
-            >
-              <div className='text-center text-2xl font-medium'>
-                Διαχειριστές
-              </div>
             </div>
           </div>
         </div>

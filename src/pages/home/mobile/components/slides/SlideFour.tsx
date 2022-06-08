@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { sleep } from '../../../../../common/utils/sleep';
 
 const SlideFour = () => {
@@ -55,7 +54,7 @@ const SlideFour = () => {
           />
         </svg>
       </div>
-      <Link
+      {/* <Link
         to='/'
         className='flex items-center justify-center space-x-1 bg-green-700 py-3 text-lg font-medium text-white'
       >
@@ -72,7 +71,7 @@ const SlideFour = () => {
             clipRule='evenodd'
           />
         </svg>
-      </Link>
+      </Link> */}
     </div>
   ) : (
     <div className='flex h-full w-full flex-col items-center justify-between bg-green-600'>

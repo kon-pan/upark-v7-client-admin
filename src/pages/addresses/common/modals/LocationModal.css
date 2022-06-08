@@ -1,0 +1,15 @@
+@media screen and (max-width: 450px) {
+  .leaflet-container {
+    height: 300px;
+    width: 280px;
+    background-color: #a9b4c2;
+  }
+}
+
+@media screen and (min-width: 456px) {
+  .leaflet-container {
+    height: 400px;
+    width: 400px;
+    background-color: #a9b4c2;
+  }
+}
